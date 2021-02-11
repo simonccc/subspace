@@ -20,9 +20,6 @@ fi
 if [ -z "${SUBSPACE_IPV6_POOL-}" ]; then
   export SUBSPACE_IPV6_POOL="fd00::10:97:0/112"
 fi
-if [ -z "${SUBSPACE_NAMESERVERS-}" ]; then
-  export SUBSPACE_NAMESERVERS="1.1.1.1,1.0.0.1"
-fi
 
 if [ -z "${SUBSPACE_LETSENCRYPT-}" ]; then
   export SUBSPACE_LETSENCRYPT="true"
@@ -60,10 +57,15 @@ if [ -z "${SUBSPACE_IPV6_NAT_ENABLED-}" ]; then
   export SUBSPACE_IPV6_NAT_ENABLED=1
 fi
 
-# Empty out inherited nameservers
-echo "" > /etc/resolv.conf
 # Set DNS servers
-echo ${SUBSPACE_NAMESERVERS} | tr "," "\n" | while read -r ns; do echo "nameserver ${ns}" >>/etc/resolv.conf; done
+echo "
+nameserver 8.8.8.8
+nameserver 1.1.1.1
+nameserver 8.8.4.4
+nameserver 4.2.2.1
+nameserver 4.2.2.2
+options timeout:2 attempts:3 rotate single-request-reopen" > /etc/resolv.dnsmasq
+
 
 if [ -z "${SUBSPACE_DISABLE_MASQUERADE-}" ]; then
   # IPv4
@@ -158,6 +160,11 @@ if ! test -d /etc/service/dnsmasq; then
 
     # Never forward addresses in the non-routed address spaces.
     bogus-priv
+    edns-packet-max=1280
+    dns-forward-max=128
+    cache-size=2048
+    resolv-file=/etc/resolv.dnsmasq
+    
 DNSMASQ
 
   mkdir -p /etc/service/dnsmasq

@@ -19,7 +19,7 @@ ENV GODEBUG="netdns=go http2server=0"
 RUN make build BUILD_VERSION=${BUILD_VERSION}
 
 FROM alpine:3.11.6
-LABEL maintainer="github.com/subspacecommunity/subspace"
+LABEL maintainer="github.com/simonc/subspace"
 
 COPY --from=build  /src/subspace /usr/bin/subspace
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
