@@ -18,7 +18,7 @@ ENV GODEBUG="netdns=go http2server=0"
 
 RUN make build BUILD_VERSION=${BUILD_VERSION}
 
-FROM alpine:3.13.2
+FROM alpine:latest
 LABEL maintainer="github.com/simonccc/subspace"
 
 COPY --from=build  /src/subspace /usr/bin/subspace
