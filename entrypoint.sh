@@ -38,7 +38,7 @@ if [ -z "${SUBSPACE_HTTP_INSECURE-}" ]; then
 fi
 
 if [ -z "${SUBSPACE_THEME-}" ]; then
-  export SUBSPACE_THEME="green"
+  export SUBSPACE_THEME="red"
 fi
 
 export DEBIAN_FRONTEND="noninteractive"
@@ -64,6 +64,9 @@ nameserver 1.1.1.1
 nameserver 8.8.4.4
 nameserver 4.2.2.1
 nameserver 4.2.2.2
+nameserver 9.9.9.9
+nameserver 149.112.112.112
+nameserver 149.112.112.9
 options timeout:2 attempts:3 rotate single-request-reopen" > /etc/resolv.dnsmasq
 
 
@@ -161,10 +164,10 @@ if ! test -d /etc/service/dnsmasq; then
     # Never forward addresses in the non-routed address spaces.
     bogus-priv
     edns-packet-max=1280
-    dns-forward-max=128
-    cache-size=2048
+    dns-forward-max=512
+    cache-size=4096
     resolv-file=/etc/resolv.dnsmasq
-    
+ 
 DNSMASQ
 
   mkdir -p /etc/service/dnsmasq
