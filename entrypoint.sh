@@ -164,8 +164,8 @@ if ! test -d /etc/service/dnsmasq; then
     # Never forward addresses in the non-routed address spaces.
     bogus-priv
     edns-packet-max=1280
-    dns-forward-max=512
-    cache-size=4096
+    dns-forward-max=128
+    cache-size=2048
     resolv-file=/etc/resolv.dnsmasq
  
 DNSMASQ
